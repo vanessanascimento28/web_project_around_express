@@ -10,7 +10,7 @@ const cardsPath = path.join(__dirname, '..', 'data', 'cards.json');
 router.get('/', (req, res) => {
   fs.readFile(cardsPath, 'utf8', (err, data) => {
     if (err) return res.status(500).send({ message: 'Erro ao carregar cards' });
-    res.send(JSON.parse(data));
+    return res.send(JSON.parse(data));
   });
 });
 
