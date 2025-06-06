@@ -1,43 +1,27 @@
 const express = require('express');
-const Card = require('../models/card');
-
 const router = express.Router();
 
-// GET /cards — retorna todos os cartões
-router.get('/', async (req, res) => {
-  try {
-    const cards = await Card.find({});
-    res.send(cards);
-  } catch (err) {
-    res.status(500).send({ message: 'Erro ao buscar os cartões' });
-  }
-});
+const {
+  getCards,
+  createCard,
+  deleteCard,
+  likeCard,
+  dislikeCard,
+} = require('../controllers/cards');
 
-// POST /cards — cria um novo cartão
-router.post('/', async (req, res) => {
-  const { name, link, owner } = req.body;
+// GET /cards — todos os cartões
+router.get('/', getCards);
 
-  try {
-    const newCard = await Card.create({ name, link, owner });
-    res.status(201).send(newCard);
-  } catch (err) {
-    res.status(400).send({ message: 'Erro ao criar o cartão', error: err.message });
-  }
-});
+// POST /cards — criar cartão
+router.post('/', createCard);
 
-// DELETE /cards/:cardId — deleta um cartão por _id
-router.delete('/:cardId', async (req, res) => {
-  try {
-    const card = await Card.findByIdAndDelete(req.params.cardId);
+// DELETE /cards/:cardId — deletar cartão
+router.delete('/:cardId', deleteCard);
 
-    if (!card) {
-      return res.status(404).send({ message: 'Cartão não encontrado' });
-    }
+// PUT /cards/:cardId/likes — curtir cartão
+router.put('/:cardId/likes', likeCard);
 
-    res.send({ message: 'Cartão deletado com sucesso', card });
-  } catch (err) {
-    res.status(500).send({ message: 'Erro ao deletar o cartão' });
-  }
-});
+// DELETE /cards/:cardId/likes — remover curtida
+router.delete('/:cardId/likes', dislikeCard);
 
 module.exports = router;
