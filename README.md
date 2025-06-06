@@ -8,6 +8,8 @@ Node.js
 Express.js
 JavaScript
 Nodemon
+Postman
+Moongo
 
 📌 Funcionalidades
 
